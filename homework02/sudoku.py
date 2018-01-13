@@ -79,7 +79,10 @@ def find_empty_positions(grid):
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    pass
+    for row in range(len(grid)):
+        for col in range(len(grid)):
+            if grid[row][col] == '.':
+                return (row, col)
 
 
 def find_possible_values(grid, pos):
@@ -92,7 +95,11 @@ def find_possible_values(grid, pos):
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    pos_val = {}
+    L = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    exc_list = get_col(grid, pos) + get_row(grid, pos) + get_block(grid, pos)
+    pos_val = {i for i in L if i not in exc_list}
+    return pos_val
 
 
 def solve(grid):
