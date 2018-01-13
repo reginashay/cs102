@@ -127,8 +127,34 @@ def solve(grid):
 
 def check_solution(solution):
     """ Если решение solution верно, то вернуть True, в противном случае False """
-    # TODO: Add doctests with bad puzzles
-    pass
+    for row in range(0, 9):
+        d = {}
+        for col in range(0, 9):
+            val = solution[row][col]
+            if val != '.' and val in d:
+                return False
+            d[val] = 1
+
+    for col in range(0, 9):
+        d = {}
+        for row in range(0, 9):
+            val = solution[row][col]
+            if val != '.' and val in d:
+                return False
+            d[val] = 1
+
+    for i in range(0, 3):
+        for j in range(0, 3):
+            d = {}
+            for r in range(0, 3):
+                for c in range(0, 3):
+                    row = (3*i)+r
+                    col = (3*j)+c
+                    val = solution[row][col]
+                    if val != '.' and val in d:
+                        return False
+                    d[val] = 1
+                    return True
 
 
 def generate_sudoku(N):
