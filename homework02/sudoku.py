@@ -178,7 +178,16 @@ def generate_sudoku(N):
     >>> check_solution(solution)
     True
     """
-    pass
+    m = 1
+    grid = [['.']*9 for _ in range(9)]
+    grid = solve(grid)
+    while m <= (81 - N):
+        i = random.randint(0, 8)
+        j = random.randint(0, 8)
+        if grid[i][j] != '.':
+            grid[i][j] = '.'
+            m += 1
+    return grid
 
 
 if __name__ == '__main__':
