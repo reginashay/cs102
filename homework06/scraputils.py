@@ -8,7 +8,7 @@ def extract_news(parser):
 
     rows = parser.findAll('table')[2].findAll('tr')
 
-    for n in range(0, 89, 3):
+    for n in range(0, len(rows) - 3, 3):
 
         try:
             comments = rows[n + 1].findAll('a')
@@ -23,12 +23,18 @@ def extract_news(parser):
             comment = 0
 
         author = rows[n + 1].a.text
+        if 'ago' in author:
+            author = None
 
         points = rows[n + 1].findAll('span')[0].text.split()[0]
 
         title = rows[n].findAll('a')[1].text
 
         url = rows[n].findAll('a')[1]['href']
+
+        if ' ' not in title:
+            title = rows[n].findAll('a')[0].text
+            url = rows[n].findAll('a')[1].text
 
         news_list.append({
             'author': author if author else None,
