@@ -6,14 +6,44 @@ def extract_news(parser):
     """ Extract news from a given web page """
     news_list = []
 
-    # PUT YOUR CODE HERE
+    rows = parser.findAll('table')[2].findAll('tr')
+
+    for n in range(0, 89, 3):
+
+        try:
+            comments = rows[n + 1].findAll('a')
+            if comments:
+                if 'comment' in comments[3].text:
+                    comment = int(comments[3].text.split()[0]) 
+                else: 
+                    comment = 0
+            else:
+                comment = 0
+        except (IndexError):
+            comment = 0
+
+        author = rows[n + 1].a.text
+
+        points = rows[n + 1].findAll('span')[0].text.split()[0]
+
+        title = rows[n].findAll('a')[1].text
+
+        url = rows[n].findAll('a')[1]['href']
+
+        news_list.append({
+            'author': author if author else None,
+            'comments': comment,
+            'points': int(points) if points else 0,
+            'title': title,
+            'url': url if 'http' in url else None
+            })
 
     return news_list
 
 
 def extract_next_page(parser):
     """ Extract next page URL """
-    # PUT YOUR CODE HERE
+    return parser.findAll('table')[2].findAll('tr')[-1].a['href']
 
 
 def get_news(url, n_pages=1):
@@ -29,4 +59,3 @@ def get_news(url, n_pages=1):
         news.extend(news_list)
         n_pages -= 1
     return news
-
