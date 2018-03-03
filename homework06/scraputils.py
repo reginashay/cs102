@@ -49,7 +49,11 @@ def extract_news(parser):
 
 def extract_next_page(parser):
     """ Extract next page URL """
-    return parser.findAll('table')[2].findAll('tr')[-1].a['href']
+    table = parser.findAll('table')[2].findAll('tr')
+    try:
+        return table[-1].a['href']
+    except:
+        return 0
 
 
 def get_news(url, n_pages=1):
@@ -61,7 +65,10 @@ def get_news(url, n_pages=1):
         soup = BeautifulSoup(response.text, "html.parser")
         news_list = extract_news(soup)
         next_page = extract_next_page(soup)
-        url = "https://news.ycombinator.com/" + next_page
-        news.extend(news_list)
-        n_pages -= 1
+        if type(next_page) == str:
+            url = "https://news.ycombinator.com/" + next_page
+            news.extend(news_list)
+            n_pages -= 1
+        else:
+            n_pages = 0
     return news
