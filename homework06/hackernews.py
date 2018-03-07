@@ -33,7 +33,7 @@ def add_label():
 @route("/update")
 def update_news():
     # 1. Получить данные с новостного сайта
-    news = get_news('https://news.ycombinator.com/', n_pages=30)
+    news = get_news('https://news.ycombinator.com/', n_pages=2)
     s = session()
 
     # 2. Проверить, каких новостей еще нет в БД. Будем считать,
@@ -55,6 +55,14 @@ def update_news():
 @route("/classify")
 def classify_news():
     # PUT YOUR CODE HERE
+
+
+@route('/recommendations')
+def recommendations():
+    # 1. Получить список неразмеченных новостей из БД
+    # 2. Получить прогнозы для каждой новости
+    # 3. Вывести ранжированную таблицу с новостями
+    return template('news_recommendations', rows=classified_news)
 """
 
 if __name__ == "__main__":

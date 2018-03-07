@@ -12,12 +12,9 @@ def extract_news(parser):
 
         try:
             comments = rows[n + 1].findAll('a')
-            if comments:
-                if 'comment' in comments[3].text:
-                    comment = int(comments[3].text.split()[0]) 
-                else: 
-                    comment = 0
-            else:
+            if 'comment' in comments[3].text:
+                comment = int(comments[3].text.split()[0]) 
+            else: 
                 comment = 0
         except (IndexError):
             comment = 0
