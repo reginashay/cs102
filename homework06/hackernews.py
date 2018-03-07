@@ -1,15 +1,14 @@
-from bottle import (
-    route, run, template, request, redirect
-)
+from bottle import route, run, template, request, redirect
 from scraputils import get_news
 from db import News, session
 from bayes import NaiveBayesClassifier
+import string
 
 
 @route("/news")
 def news_list():
     s = session()
-    rows = s.query(News).filter(News.label is None).all()
+    rows = s.query(News).filter(News.label == None).all()
     return template('news_template', rows=rows)
 
 
@@ -33,7 +32,7 @@ def add_label():
 @route("/update")
 def update_news():
     # 1. Получить данные с новостного сайта
-    news = get_news('https://news.ycombinator.com/', n_pages=2)
+    news = get_news('https://news.ycombinator.com/newest', n_pages=1)
     s = session()
 
     # 2. Проверить, каких новостей еще нет в БД. Будем считать,
@@ -51,19 +50,34 @@ def update_news():
 
     redirect("/news")
 
-"""
-@route("/classify")
-def classify_news():
-    # PUT YOUR CODE HERE
-
 
 @route('/recommendations')
 def recommendations():
     # 1. Получить список неразмеченных новостей из БД
+    rows = s.query(News).filter(News.label == None).all()
+
     # 2. Получить прогнозы для каждой новости
+    classified_news = []
+    for row in rows:
+        [prediction] = model.predict([clean(row.title).lower()])
+        if prediction == 'good':
+            classified_news.append(row)
+
     # 3. Вывести ранжированную таблицу с новостями
     return template('news_recommendations', rows=classified_news)
-"""
+
+
+def clean(s):
+    translator = str.maketrans("", "", string.punctuation)
+    return s.translate(translator)
+
 
 if __name__ == "__main__":
+    s = session()
+    rows = s.query(News).filter(News.label != None).all()
+    X_train = [clean(row.title).lower() for row in rows]
+    y_train = [row.label for row in rows]
+    model = NaiveBayesClassifier()
+    model.fit(X_train, y_train)
+
     run(host="localhost", port=8080)
