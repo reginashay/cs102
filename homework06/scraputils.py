@@ -13,10 +13,10 @@ def extract_news(parser):
         try:
             comments = rows[n + 1].findAll('a')
             if 'comment' in comments[3].text:
-                comment = int(comments[3].text.split()[0]) 
-            else: 
+                comment = int(comments[3].text.split()[0])
+            else:
                 comment = 0
-        except (IndexError):
+        except IndexError:
             comment = 0
 
         author = rows[n + 1].a.text
@@ -49,7 +49,7 @@ def extract_next_page(parser):
     table = parser.findAll('table')[2].findAll('tr')
     try:
         return table[-1].a['href']
-    except:
+    except TypeError:
         return 0
 
 

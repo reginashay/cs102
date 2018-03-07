@@ -9,7 +9,7 @@ from bayes import NaiveBayesClassifier
 @route("/news")
 def news_list():
     s = session()
-    rows = s.query(News).filter(News.label == None).all()
+    rows = s.query(News).filter(News.label is None).all()
     return template('news_template', rows=rows)
 
 
@@ -23,7 +23,7 @@ def add_label():
     # 2. Получить запись из БД с соответствующим id (такая запись только одна!)
     # 3. Изменить значение метки записи на значение label
     s.query(News).filter(News.id == id).update({'label': label})
-    
+
     # 4. Сохранить результат в БД
     s.commit()
 
