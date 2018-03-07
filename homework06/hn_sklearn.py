@@ -18,7 +18,7 @@ def get_data():
 
 
 s = session()
-cnt = 730
+cnt = int(len(s.query(News).filter(News.label != None).all()) * 0.7)
 X, y = get_data()
 X_train, y_train, X_test, y_test = X[:cnt], y[:cnt], X[cnt:], y[cnt:]
 
