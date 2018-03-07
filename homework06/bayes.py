@@ -1,4 +1,5 @@
 from collections import Counter
+from math import log
 
 
 class NaiveBayesClassifier:
@@ -26,35 +27,61 @@ class NaiveBayesClassifier:
         self.words_counted = dict(Counter(words))
 
         # CREATE dicts with main info of words and classes for navigation.
-        self.info_labels = {
-            'labels': {}
-        }
+        self.info_labels = {}  # p(C)
 
         for label in self.labels_counted:
-            self.info_labels['labels'][label] = {
+            self.info_labels[label] = {
                 'number_of_words': self.count_words_for_label(label),
                 'apr_prob': self.labels_counted[label] / len(y)
             }
 
-        self.info_words = {
-            'words': {}
-        }
+        self.info_words = {}  # p(w_i|C)
 
         for word in self.words_counted:
             attrs = {}
             for label in self.labels_counted:
-                attrs[label] = self.smoothing(word, cur_class)
-            self.info_words['words'][word] = attrs
+                attrs[label] = self.smoothing(word, label)
+            self.info_words[word] = attrs
 
         # Calculated p(C), p(w_i|C).
 
     def predict(self, X):
         """ Perform classification on an array of test vectors X. """
-        pass
+        answers = []
+
+        for doc in X:
+            words = doc.split()
+            predictions = []
+
+            # ln(p(C))
+            for label in self.info_labels:
+                apr_prob = self.info_labels[label]['apr_prob']
+                result = log(apr_prob)
+
+                # ln(p(w_i|C))
+                for word in words:
+                    curr_word = self.info_words.get(word)
+                    if curr_word:
+                        result += log(curr_word[label])
+
+                predictions.append((result, label))
+
+            score, predicted = max(predictions)
+            answers.append(predicted)
+
+        return answers
 
     def score(self, X_test, y_test):
         """ Returns the mean accuracy on the given test data and labels. """
-        pass
+        total = len(y_test)
+        correct = 0
+        prediction = self.predict(X_test)
+
+        for i in range(len(prediction)):
+            if prediction[i] == y_test[i]:
+                correct += 1
+
+        return correct / total
 
     """ ADDITIONAL """
 
@@ -74,7 +101,7 @@ class NaiveBayesClassifier:
         n_ic = self.word_lab_counted.get((word, label), 0)
 
         # общее количество слов в классе
-        n_c = self.info_labels['labels'][label]['number_of_words']
+        n_c = self.info_labels[label]['number_of_words']
 
         # размерность вектора слов
         d = len(self.words_counted)
