@@ -86,24 +86,21 @@ class NaiveBayesClassifier:
     """ ADDITIONAL """
 
     def count_words_for_label(self, label):
-        cnt = 0
+        c = 0
         for word, word_label in self.word_lab_counted:
             if word_label == label:
-                cnt += self.word_lab_counted[(word, word_label)]
-        return cnt
+                c += self.word_lab_counted[(word, word_label)]
+        return c
 
     def smoothing(self, word, label):
 
-        # параметр сглаживания
+        # параметр сглаживания:
         alpha = self.alpha
-
-        # число наблюдений слова для данного класса
+        # число наблюдений слова для данного класса:
         n_ic = self.word_lab_counted.get((word, label), 0)
-
-        # общее количество слов в классе
+        # общее количество слов в классе:
         n_c = self.info_labels[label]['number_of_words']
-
-        # размерность вектора слов
+        # размерность вектора слов:
         d = len(self.words_counted)
 
         return (n_ic + alpha) / (n_c + alpha * d)
