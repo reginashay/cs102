@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS mlboot (
     id INTEGER PRIMARY KEY,
     age INTEGER,
     gender INTEGER,
-    height INTEGER,
+    height REAL,
     weight REAL,
     ap_hi INTEGER,
     ap_lo INTEGER,
