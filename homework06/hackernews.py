@@ -32,7 +32,7 @@ def add_label():
 @route("/update")
 def update_news():
     # 1. Получить данные с новостного сайта
-    news = get_news('https://news.ycombinator.com/newest', n_pages=1)
+    news = get_news('https://news.ycombinator.com', n_pages=1)
     s = session()
 
     # 2. Проверить, каких новостей еще нет в БД. Будем считать,
