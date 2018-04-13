@@ -60,35 +60,39 @@ def handle_book(message):
             BOOK = open_book()
             keyboard = types.InlineKeyboardMarkup()
             btns = []
-            if start > 0: btns.append(types.InlineKeyboardButton(
-                text='back', callback_data='to_{}'.format(start - 700)))
+            if start > 0:
+                btns.append(types.InlineKeyboardButton(
+                    text='back', callback_data='to_{}'.format(start - 700)))
             btns.append(types.InlineKeyboardButton(
                 text='"/start" to exit',
                 url='https://olymp.mipt.ru/'))
-            if stop < len(BOOK): btns.append(types.InlineKeyboardButton(
-                text='forward', callback_data='to_{}'.format(stop)))
+            if stop < len(BOOK):
+                btns.append(types.InlineKeyboardButton(
+                    text='forward', callback_data='to_{}'.format(stop)))
             keyboard.add(*btns)
             return keyboard
 
         def start_reading(message):
             """ Начинаем с первой страницы """
             BOOK = open_book()
-            bot.send_message(message.chat.id, BOOK[:700], parse_mode='Markdown',
-                reply_markup=pages_keyboard(0, 700))
+            bot.send_message(message.chat.id, BOOK[:700],
+                             parse_mode='Markdown',
+                             reply_markup=pages_keyboard(0, 700))
 
-        start_reading(message) # Запускаем сам режим чтения
+        start_reading(message)  # Запускаем сам режим чтения
 
         @bot.callback_query_handler(func=lambda c: c.data)
         def pages(c):
-            """ Редактируем сообщение каждый раз, когда пользователь переходит по страницам """
+            """ Редактируем сообщение каждый раз,
+                когда пользователь переходит по страницам """
             BOOK = open_book()
             bot.edit_message_text(
                 chat_id=c.message.chat.id,
                 message_id=c.message.message_id,
                 text=BOOK[int(c.data[3:]):int(c.data[3:]) + 700],
                 parse_mode='Markdown',
-                reply_markup=pages_keyboard(int(c.data[3:]), 
-                    int(c.data[3:]) + 700))
+                reply_markup=pages_keyboard(int(c.data[3:]),
+                                            int(c.data[3:]) + 700))
 
     if message.text == 'Вернуться в главное меню':
         startBot(message)
@@ -142,6 +146,12 @@ def listing(message, domain, a, b, c, d, e):
     bot.send_message(message.chat.id, r, parse_mode='HTML')
 
 
+"""
+THEMES
+Картинки с задачками недоступны, требуется модификация этой части.
+"""
+
+
 def trigo(message):
     """ Тригонометрия """
     if message.text == 'Случайная задача с полным решением':
@@ -162,6 +172,7 @@ def trigo(message):
         listing(message, domain, a, b, c, d, e)
     if message.text == 'В главное меню':
         startBot(message)
+
 
 def ster(message):
     """ Стереометрия """
@@ -184,6 +195,7 @@ def ster(message):
     if message.text == 'В главное меню':
         startBot(message)
 
+
 def uneq(message):
     """ Неравенства """
     if message.text == 'Случайная задача с полным решением':
@@ -205,6 +217,7 @@ def uneq(message):
     if message.text == 'В главное меню':
         startBot(message)
 
+
 def plan(message):
     """ Планиметрия """
     if message.text == 'Случайная задача с полным решением':
@@ -225,6 +238,7 @@ def plan(message):
         listing(message, domain, a, b, c, d, e)
     if message.text == 'В главное меню':
         startBot(message)
+
 
 def num_theo(message):
     """ Числа и их свойства """
