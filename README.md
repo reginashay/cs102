@@ -1,7 +1,7 @@
-# My project's README
+# My project's readme
 
 * Регина Шайдуллина
 * K3142
 * shaidullina_1999@mail.ru
 
-Решения лабораторных работ.
+Решения лабораторных работ; I курс.
