@@ -13,18 +13,38 @@
                 <th>Author</th>
                 <th>#Likes</th>
                 <th>#Comments</th>
-                <th colspan="3">Label</th>
+                <th>Label</th>
+                <th>Check</th>
             </thead>
             <tbody>
-                %for row in rows:
-                <tr>
+                %for row in good:
+                <tr class="positive">
                     <td><a href="{{ row.url }}">{{ row.title }}</a></td>
                     <td>{{ row.author }}</td>
                     <td>{{ row.points }}</td>
                     <td>{{ row.comments }}</td>
-                    <td class="positive"><a href="/add_label/?label=good&id={{ row.id }}">Интересно</a></td>
-                    <td class="active"><a href="/add_label/?label=maybe&id={{ row.id }}">Возможно</a></td>
-                    <td class="negative"><a href="/add_label/?label=never&id={{ row.id }}">Не интересно</a></td>
+                    <td>Good</td>
+                    <td><a href="/add_label_recs/?label=good&id={{ row.id }}">Correct</a></td>
+                </tr>
+                %end
+                %for row in maybe:
+                <tr class="active">
+                    <td><a href="{{ row.url }}">{{ row.title }}</a></td>
+                    <td>{{ row.author }}</td>
+                    <td>{{ row.points }}</td>
+                    <td>{{ row.comments }}</td>
+                    <td>Maybe</td>
+                    <td><a href="/add_label_recs/?label=maybe&id={{ row.id }}">Correct</a></td>
+                </tr>
+                %end
+                %for row in never:
+                <tr class="negative">
+                    <td><a href="{{ row.url }}">{{ row.title }}</a></td>
+                    <td>{{ row.author }}</td>
+                    <td>{{ row.points }}</td>
+                    <td>{{ row.comments }}</td>
+                    <td>No</td>
+                    <td><a href="/add_label_recs/?label=never&id={{ row.id }}">Correct</a></td>
                 </tr>
                 %end
             </tbody>

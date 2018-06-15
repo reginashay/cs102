@@ -29,6 +29,22 @@ def add_label():
     redirect("/news")
 
 
+@route("/add_label_recs/")
+def add_label_recs():
+    # 1. Получить значения параметров label и id из GET-запроса
+    label = request.query.label
+    id = request.query.id
+    s = session()
+
+    # 2. Получить запись из БД с соответствующим id (такая запись только одна!)
+    # 3. Изменить значение метки записи на значение label
+    s.query(News).filter(News.id == id).update({'label': label})
+
+    # 4. Сохранить результат в БД
+    s.commit()
+
+    redirect("/recommendations")
+
 @route("/update")
 def update_news():
     # 1. Получить данные с новостного сайта
@@ -53,19 +69,26 @@ def update_news():
 
 @route('/recommendations')
 def recommendations():
-    # 1. Получить список неразмеченных новостей из БД
-    rows = s.query(News).filter(News.label == None).all()
+	# 1. Получить список неразмеченных новостей из БД
+	rows = s.query(News).filter(News.label == None).all()
 
-    # 2. Получить прогнозы для каждой новости
-    classified_news = []
-    for row in rows:
-        [prediction] = model.predict([clean(row.title).lower()])
-        if prediction == 'good':
-            classified_news.append(row)
+	# 2. Получить прогнозы для каждой новости
+	good, maybe, never = [], [], []
+	for row in rows:
+		[prediction] = model.predict([clean(row.title).lower()])
+		if prediction == 'good':
+			good.append(row)
+	for row in rows:
+		[prediction] = model.predict([clean(row.title).lower()])
+		if prediction == 'maybe':
+			maybe.append(row)
+	for row in rows:
+		[prediction] = model.predict([clean(row.title).lower()])
+		if prediction == 'never':
+			never.append(row)
 
-    # 3. Вывести ранжированную таблицу с новостями
-    return template('news_recommendations', rows=classified_news)
-
+	# 3. Вывести ранжированную таблицу с новостями
+	return template('news_recommendations', good=good, maybe=maybe, never=never)
 
 def clean(s):
     translator = str.maketrans("", "", string.punctuation)
