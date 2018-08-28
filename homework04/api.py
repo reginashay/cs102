@@ -9,11 +9,11 @@ import plotly.graph_objs as go
 import networkx as nx
 import community
 import matplotlib.pyplot as plt
-#import numpy
+import numpy
 
 
 config = {
-    'VK_ACCESS_TOKEN': '1460b5289f430e3c9f461831f994546a99cdd6f021feb2c5bebc47a3d6c2daf1cbfb1d6053f87d06cc2fd',
+    'VK_ACCESS_TOKEN': '',
     'PLOTLY_USERNAME': 'reginashay',
     'PLOTLY_API_KEY': 'B6iSZ7YBb3JguRIxbxL0'
 }
