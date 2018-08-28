@@ -9,11 +9,11 @@ import plotly.graph_objs as go
 import networkx as nx
 import community
 import matplotlib.pyplot as plt
-import numpy
+#import numpy
 
 
 config = {
-    'VK_ACCESS_TOKEN': '',
+    'VK_ACCESS_TOKEN': '1460b5289f430e3c9f461831f994546a99cdd6f021feb2c5bebc47a3d6c2daf1cbfb1d6053f87d06cc2fd',
     'PLOTLY_USERNAME': 'reginashay',
     'PLOTLY_API_KEY': 'B6iSZ7YBb3JguRIxbxL0'
 }
@@ -173,10 +173,10 @@ def plot_graph(graph):
 
 if __name__ == '__main__':
     user_id = 120828165
-    other_id = 113484303
+    other_id = 468524897
     r = get_friends(user_id, fields='bdate')
     b = age_predict(user_id)
-    print('Predicted age: ', b)
+    print('Predicted age:', int(b))
 
     c = messages_get_history(other_id, count=300)
     d = count_dates_from_messages(c)
