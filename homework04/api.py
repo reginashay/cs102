@@ -9,7 +9,7 @@ import plotly.graph_objs as go
 import networkx as nx
 import community
 import matplotlib.pyplot as plt
-import numpy
+#import numpy
 
 
 config = {
