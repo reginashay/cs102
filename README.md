@@ -7,7 +7,7 @@
 
 Also includes:
 
-# Homeworks from Open Machine Learning Course.
-## Spring 2018
+## Homeworks from Open Machine Learning Course.
 
+* Spring 2018
 * https://github.com/Yorko/mlcourse_open
